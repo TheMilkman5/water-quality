@@ -1,0 +1,213 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart sensors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static "dashboard/css/w3.css" %}">
+<link rel="stylesheet" href="{% static "dashboard/css/font-awesome.min.css" %}">
+
+<style>
+body {
+  background-image: url("{% static "dashboard/water.jpg" %}");
+  background-size: 1600px 900px;
+/*  background-repeat: no-repeat;*/
+}
+</style>
+</head>
+<body>
+  <div class="w3-bar w3-black">
+    <a href="/dashboard/home/" class="w3-bar-item w3-button w3-grey">
+      <i class="fa fa-dashboard"></i> Dashboard
+    </a>
+    <a href="/dashboard/history/" class="w3-bar-item w3-button">
+      <i class="fa fa-history"></i> History
+    </a>
+    <a href="/dashboard/systemtest/" class="w3-bar-item w3-button">
+      <i class="fa fa-check"></i> System test
+    </a>
+    <a href="#" class="w3-bar-item w3-button w3-right">
+      <div id="Date"></div>
+    </a>
+  </div>
+  <div id="isConnecting_div" >
+    <div class="w3-panel w3-grey">
+      <h6>Connecting...</h6>
+    </div>
+  </div>
+  <div id="isConnected_div" style="display: none">
+    <div class="w3-panel w3-green" >
+      <h6>Connnected!</h6>
+    </div>
+  </div>
+  <div id="isClientDisconnected_div" style="display: none">
+    <div class="w3-panel w3-red">
+      <h6>Disconnnected!</h6>
+    </div>
+  </div>
+  <div id="isServerDisconnected_div" style="display: none">
+    <div class="w3-panel w3-red">
+      <h6>Connect server ZigBee module!</h6>
+    </div>
+  </div>
+  <div class="w3-container w3-margin">
+    <div class="w3-row">
+      <div class="w3-third w3-container ">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>pH</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="S1">
+            0.0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>pH should lie within 6.5 – 8.5 (WHO).</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>ORP (mV)</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="S2">
+            0.0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>-</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Conductivity (μS/cm) | TDS (PPM) </h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <div class="w3-row">
+              <div class="w3-half w3-container ">
+                <h3 id="S3">
+                0.0
+                </h3>
+              </div>
+              <div class="w3-half w3-container ">
+                <h3 id="TDS">
+                0.0
+                </h3>
+              </div>
+            </div>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>Conductivity must be less than 1250 μS/cm (WHO)</h5>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w3-container w3-margin">
+    <div class="w3-row">
+      <div class="w3-third w3-container ">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Turbidity (NTU)</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="S4">
+            0.0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>Turbidity must be less than 1 NTU (WHO)</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Temperature (°C)</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="S5">
+            0.0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>-</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Flow-rate (L/min)</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="S6">
+            0.0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>-</h5>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w3-container w3-margin">
+    <div class="w3-row">
+      <div class="w3-third w3-container ">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Coliform kill rate</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="coliform">
+            0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>UNIVERSITY OF CALIFORNIA - Oxidation-Reduction Potential (ORP) for Water Disinfection Monitoring, Control, and Documentation. PUBLICATION 8149.</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container ">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>E. Coli kill rate</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="ecoli">
+            0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>UNIVERSITY OF CALIFORNIA - Oxidation-Reduction Potential (ORP) for Water Disinfection Monitoring, Control, and Documentation. PUBLICATION 8149.</h5>
+          </footer>
+        </div>
+      </div>
+      <div class="w3-third w3-container ">
+        <div class="w3-card-4">
+          <header class="w3-container w3-dark-gray">
+            <h3>Salmonella kill rate</h3>
+          </header>
+          <div class="w3-container w3-light-gray">
+            <h3 id="salmonella">
+            0
+            </h3>
+          </div>
+          <footer class="w3-container w3-gray">
+            <h5>UNIVERSITY OF CALIFORNIA - Oxidation-Reduction Potential (ORP) for Water Disinfection Monitoring, Control, and Documentation. PUBLICATION 8149.</h5>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static "dashboard/jquery.min.js" %}"></script>
+  <script src="{% static "dashboard/request_data_home.js" %}"></script>
+</body>
+</html> 

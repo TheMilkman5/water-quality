@@ -1,0 +1,83 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart sensors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static "dashboard/css/w3.css" %}">
+<link rel="stylesheet" href="{% static "dashboard/css/font-awesome.min.css" %}">
+
+<style>
+body {
+  background-image: url("{% static "dashboard/water.jpg" %}");
+  background-size: 1600px 900px;
+/*  background-repeat: no-repeat;*/
+}
+</style>
+</head>
+<body>
+  <div class="w3-bar w3-black">
+    <a href="/dashboard/home/" class="w3-bar-item w3-button">
+      <i class="fa fa-dashboard"></i> Dashboard
+    </a>
+    <a href="/dashboard/history/" class="w3-bar-item w3-button w3-grey">
+      <i class="fa fa-history"></i> History
+    </a>
+    <a href="/dashboard/systemtest/" class="w3-bar-item w3-button">
+      <i class="fa fa-check"></i> System test
+    </a>
+    <a href="#" class="w3-bar-item w3-button w3-right">
+      <div id="Date"></div>
+    </a>
+  </div>
+  <div id="isConnecting_div" >
+    <div class="w3-panel w3-grey">
+      <h6>Connecting...</h6>
+    </div>
+  </div>
+  <div id="isConnected_div" style="display: none">
+    <div class="w3-panel w3-green" >
+      <h6>Connnected!</h6>
+    </div>
+  </div>
+  <div id="isClientDisconnected_div" style="display: none">
+    <div class="w3-panel w3-red">
+      <h6>Disconnnected!</h6>
+    </div>
+  </div>
+  <div id="isServerDisconnected_div" style="display: none">
+    <div class="w3-panel w3-red">
+      <h6>Connect server ZigBee module!</h6>
+    </div>
+  </div>
+  <div class="w3-container">
+    <table class="w3-table-all w3-striped w3-hoverable">
+      <thead>
+        <tr class="w3-light-grey">
+          <th>Date</th>
+          <th>pH</th>
+          <th>ORP (mV)</th>
+          <th>Conductivity (μS/cm)</th>
+          <th>Turbidity (NTU)</th>
+          <th>Temperature (°C)</th>
+          <th>Flow-rate (L/min)</th>
+        </tr>
+      </thead>
+    {% for data in object_list reversed %}
+      <tr>
+        <td>{{data.date_stamp}}</td>
+        <td>{{data.ph}}</td>
+        <td>{{data.orp}}</td>
+        <td>{{data.conductivity}}</td>
+        <td>{{data.turbidity}}</td>
+        <td>{{data.temperature}}</td>
+        <td>{{data.flow_rate}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  <script src="{% static "dashboard/jquery.min.js" %}"></script>
+  <script src="{% static "dashboard/request_data.js" %}"></script>
+</body>
+</html> 
